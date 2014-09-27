@@ -1,0 +1,190 @@
+<% # encoding: UTF-8 %>
+<!DOCTYPE html>
+<html lang="<%= current_language %>">
+<head>
+<meta charset="utf-8" />
+<title><%=h html_title %></title>
+<meta name="description" content="<%= Redmine::Info.app_name %>" />
+<meta name="keywords" content="issue,bug,tracker" />
+<%= csrf_meta_tag %>
+<%= favicon %>
+<%= stylesheet_link_tag 'jquery/jquery-ui-1.9.2', 'application', :media => 'all' %>
+<%= stylesheet_link_tag 'rtl', :media => 'all' if l(:direction) == 'rtl' %>
+<%= stylesheet_link_tag '../plugin_assets/redmine_simplify_mephi/stylesheets/mephi_simplify', 'application', :media => 'all' %>
+<%= javascript_heads %>
+<%= heads_for_theme %>
+<%= call_hook :view_layouts_base_html_head %>
+<!-- page specific tags -->
+<%= yield :header_tags -%>
+</head>
+<body class="<%=h body_css_classes %>">
+<div id="wrapper">
+<div id="wrapper2">
+<div id="wrapper3">
+<div id="top-menu">
+    <div id="account">
+        <%= render_menu :account_menu -%>
+    </div>
+    <%= content_tag('div', "#{l(:label_logged_as)} #{link_to_user(User.current, :format => :username)}".html_safe, :id => 'loggedas') if User.current.logged? %>
+    <ul>
+        <li><a href="/projects/redmine-request-support/wiki/Help" class="help"><%=l(:label_help)%></a></li>
+    </ul>
+</div>
+
+<table id="workplace" style="width: 100%; border-collapse: collapse; border: 0" cellspacing="0">
+    <tr style='border: 0'>
+        <td id="right-menu" style='border: 0; padding: 0; width: 250px; top: 0px; background-color: #376b98; color: #ffffff' valign="top">
+            <div style='padding: 15px'>
+                <div id="top-menu" style='background-color: #376b98; height: auto; margin: 0; padding: 0; display: block'>
+                    <%= render_menu :top_menu if User.current.logged? || !Setting.login_required? -%>
+                </div>
+		<br>
+		<% cache do %>
+                <div id='projects-index'>
+			<h2><a href='#'><%=l(:label_project_plural)%></a></h2>
+
+			<a href="" id="expand_all"   onClick="return showAll()">Развернуть всё</a> | 
+			<a href="" id="collapse_all" onClick="return hideAll()">Свернуть всё</a>
+
+			<table class="right-menu-list">
+			<tbody>
+				<%
+					scope = Project
+					unless params[:closed]
+					scope = scope.active
+					end
+					@projects = scope.visible.order('lft').all
+				%>
+				<% ancestors = [] %>
+				<% for project in @projects %>
+				<% rowid = "" %>
+				<% classes = "" %>
+				<% spanicon = "" %>
+				<% openonclick = "" %>
+				<% showchildren = false %>
+				<% project_id_lsd = "%04d" % project.id %>
+				<% project.children.each do |child| %>
+					<% if @projects.include?(child) %>
+					<% showchildren = true %>
+					<% break %>
+					<% end %>
+				<% end %>
+				<% if(!project.children.empty? && showchildren) %>
+					<% classes += " closed parent " %> <%# + cycle("odd", "even") %>
+					<% rowid = "#{project_id_lsd}span" %>
+					<% openonclick = "showHide('#{project_id_lsd}','#{project_id_lsd}span')".html_safe %>
+					<% spanicon = content_tag(:span, "&nbsp; ".html_safe, {:onclick => openonclick, :class => "expander"}) %>
+				<% else %>
+					<% classes += " child" %>
+				<% end %>
+				<% if(project.parent_id == nil) %>
+					<% ancestors.clear %>
+					<% ancestors << project.id %>
+				<% else %>
+					<% looping = 1 %>
+					<% while (ancestors.any?) %>
+					<% project_ptr = project %>
+					<% while (project_ptr) %>
+						<% if (project_ptr.parent_id == ancestors.last) %>
+						<% looping = 0 %>
+						<% end %>
+						<% project_ptr = project_ptr.parent %>
+					<% end %>
+					<% if (looping == 0) %>
+						<% break %>
+					<% end %>
+					<% ancestors.pop %>
+					<% end %>
+					<% if (ancestors.count > 0) %>
+					<% classes += " hide" %>
+					<% end %>
+					<% ancestors.each do |pid| %>
+					<% classes += " " + "%04d" % pid %>
+					<% end %>
+					<% ancestors << project.id %>
+				<% end %>
+				<%= content_tag :tr, :class => classes, :id => rowid do -%>
+					<td class="name">
+					<%= content_tag :span, '', :style => "padding-left: #{(2*(ancestors.length-1)).to_s}em;" %>
+					<%= spanicon %>
+					<%= project.active? ? link_to(h(project.name), {:controller => 'projects', :action => 'show', :id => project}, :class => "project") :
+						h(project.name) %>
+					<%= content_tag :span, '&nbsp;'.html_safe, :onclick => openonclick, :class => "empty #{User.current.member_of?(project) ? 'my-project' : nil}"%>
+					</td>
+				<% end -%>
+				<% end %>
+			</tbody>
+			</table>
+		</div>
+		<!--br>
+		<div id='global-statistics-div'>
+			<h2><%=l(:label_statistics)%></h2>
+			<table id='global-statistics'>
+				<tr><td>Открыто: </td><td>1</td></tr>
+				<tr><td>Поручено мне: </td><td>2</td></tr>
+				<tr><td>Я поручил: </td><td>3</td></tr>
+				<tr><td>На контроле: </td><td>4</td></tr>
+				<tr><td>&nbsp;</td><td></td></tr>
+				<tr><td>Всего: </td><td>5</td></tr>
+			</table>
+		</div-->
+		<% end %>
+            </div>
+        </td>
+        <td style='border: 0; width: auto'  valign="top">
+            <article style='display: block; overflow: auto; resize: horizontal'>
+                <div id="header">
+                    <% if User.current.logged? || !Setting.login_required? %>
+                    <div id="quick-search">
+                        <%= form_tag({:controller => 'search', :action => 'index', :id => @project}, :method => :get ) do %>
+                        <%= hidden_field_tag(controller.default_search_scope, 1, :id => nil) if controller.default_search_scope %>
+                        <label for='q'>
+                          <%= link_to l(:label_search), {:controller => 'search', :action => 'index', :id => @project}, :accesskey => accesskey(:search) %>:
+                        </label>
+                        <%= text_field_tag 'q', @question, :size => 20, :class => 'small', :accesskey => accesskey(:quick_search) %>
+                        <% end %>
+                        <%= render_project_jump_box %>
+                    </div>
+                    <% end %>
+                
+                    <h1><%= page_header_title %></h1>
+                
+                    <% if display_main_menu?(@project) %>
+                    <div id="main-menu">
+                        <%= render_main_menu(@project) %>
+                    </div>
+                    <% end %>
+                </div>
+                
+                <div id="main" class="<%= sidebar_content? ? '' : 'nosidebar' %>">
+                    <div id="sidebar">
+                        <%= yield :sidebar %>
+                        <%= view_layouts_base_sidebar_hook_response %>
+                    </div>
+                
+                    <div id="content">
+                        <%= render_flash_messages %>
+                        <%= yield %>
+                        <%= call_hook :view_layouts_base_content %>
+                        <div style="clear:both;"></div>
+                    </div>
+                </div>
+                </div>
+                
+                <div id="ajax-indicator" style="display:none;"><span><%= l(:label_loading) %></span></div>
+                <div id="ajax-modal" style="display:none;"></div>
+            </article>
+        </td>
+    </tr>
+</table> <!-- workplace -->
+
+<div id="footer">
+  <div class="bgl"><div class="bgr">
+    <a href="http://it.mephi.ru">Управление информатизации</a>, E-Mail: <a href="mailto:redmine@mephi.ru">redmine@mephi.ru</a>
+  </div></div>
+</div>
+</div>
+</div>
+<%= call_hook :view_layouts_base_body_bottom %>
+</body>
+</html>
