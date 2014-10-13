@@ -39,9 +39,12 @@
                     <%= render_menu :top_menu if User.current.logged? || !Setting.login_required? -%>
                 </div>
 		<br>
-		<% cache do %>
+		<%# cache do %>
                 <div id='projects-index'>
 			<h2><a href='#'><%=l(:label_project_plural)%></a></h2>
+			<% if User.current.logged? %>
+				<a href="/projects/new" class="icon icon-add">Новый проект</a><br><br>
+			<% end %>
 
 			<a href="" id="expand_all"   onClick="return showAll()">Развернуть всё</a> | 
 			<a href="" id="collapse_all" onClick="return hideAll()">Свернуть всё</a>
@@ -51,6 +54,7 @@
 				<%
 					scope = Project
 					unless params[:closed]
+					scope = scope.where("projects.parent_id != ? OR projects.parent_id IS NULL", 12761);
 					scope = scope.active
 					end
 					@projects = scope.visible.order('lft').all
@@ -76,6 +80,7 @@
 					<% spanicon = content_tag(:span, "&nbsp; ".html_safe, {:onclick => openonclick, :class => "expander"}) %>
 				<% else %>
 					<% classes += " child" %>
+					<% spanicon = content_tag(:span, "&nbsp; ".html_safe, {:onclick => openonclick, :class => "dummyexpander"}) %>
 				<% end %>
 				<% if(project.parent_id == nil) %>
 					<% ancestors.clear %>
@@ -128,7 +133,7 @@
 				<tr><td>Всего: </td><td>5</td></tr>
 			</table>
 		</div-->
-		<% end %>
+		<%# end %>
             </div>
         </td>
         <td style='border: 0; width: auto'  valign="top">

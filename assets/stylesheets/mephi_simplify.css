@@ -12,6 +12,10 @@
   color: #ffffff !important;
   background-color: transparent !important;
   text-decoration: none;
+/* MSIE: */
+  border: none;
+  border-collapse: collapse !important;
+/* end */
 }
 
 #projects-index a:hover, .right-menu-list a:hover {
