@@ -41,85 +41,89 @@
 		<br>
 		<%# cache do %>
                 <div id='projects-index'>
-			<h2><a href='#'><%=l(:label_project_plural)%></a></h2>
-			<% if User.current.logged? %>
-				<a href="/projects/new" class="icon icon-add">Новый проект</a><br><br>
-			<% end %>
+			<%
 
-			<a href="" id="expand_all"   onClick="return showAll()">Развернуть всё</a> | 
-			<a href="" id="collapse_all" onClick="return hideAll()">Свернуть всё</a>
+			scope = Project
+			unless params[:closed]
+			scope = scope.where("(projects.parent_id != ? OR projects.parent_id IS NULL) AND id != ? OR identifier = ?", 12761, 12761, User.current.login);
+			scope = scope.active
+			end
+			@projects = scope.visible.order('lft').all
 
-			<table class="right-menu-list">
-			<tbody>
-				<%
-					scope = Project
-					unless params[:closed]
-					scope = scope.where("(projects.parent_id != ? OR projects.parent_id IS NULL) AND id != ? OR identifier = ?", 12761, 12761, User.current.login);
-					scope = scope.active
-					end
-					@projects = scope.visible.order('lft').all
-				%>
-				<% ancestors = [] %>
-				<% for project in @projects %>
-				<% rowid = "" %>
-				<% classes = "" %>
-				<% spanicon = "" %>
-				<% openonclick = "" %>
-				<% showchildren = false %>
-				<% project_id_lsd = "%04d" % project.id %>
-				<% project.children.each do |child| %>
-					<% if @projects.include?(child) %>
-					<% showchildren = true %>
-					<% break %>
-					<% end %>
+			if @projects.count > 0 %>
+
+				<h2><a href='#'><%=l(:label_project_plural)%></a></h2>
+				<% if User.current.logged? %>
+					<a href="/projects/new" class="icon icon-add">Новый проект</a><br><br>
 				<% end %>
-				<% if(!project.children.empty? && showchildren) %>
-					<% classes += " closed parent " %> <%# + cycle("odd", "even") %>
-					<% rowid = "#{project_id_lsd}span" %>
-					<% openonclick = "showHide('#{project_id_lsd}','#{project_id_lsd}span')".html_safe %>
-					<% spanicon = content_tag(:span, "&nbsp; ".html_safe, {:onclick => openonclick, :class => "expander"}) %>
-				<% else %>
-					<% classes += " child" %>
-					<% spanicon = content_tag(:span, "&nbsp; ".html_safe, {:onclick => openonclick, :class => "dummyexpander"}) %>
-				<% end %>
-				<% if(project.parent_id == nil) %>
-					<% ancestors.clear %>
-					<% ancestors << project.id %>
-				<% else %>
-					<% looping = 1 %>
-					<% while (ancestors.any?) %>
-					<% project_ptr = project %>
-					<% while (project_ptr) %>
-						<% if (project_ptr.parent_id == ancestors.last) %>
-						<% looping = 0 %>
-						<% end %>
-						<% project_ptr = project_ptr.parent %>
-					<% end %>
-					<% if (looping == 0) %>
+
+				<a href="" id="expand_all"   onClick="return showAll()">Развернуть всё</a> | 
+				<a href="" id="collapse_all" onClick="return hideAll()">Свернуть всё</a>
+
+				<table class="right-menu-list">
+				<tbody>
+					<% ancestors = [] %>
+					<% for project in @projects %>
+					<% rowid = "" %>
+					<% classes = "" %>
+					<% spanicon = "" %>
+					<% openonclick = "" %>
+					<% showchildren = false %>
+					<% project_id_lsd = "%04d" % project.id %>
+					<% project.children.each do |child| %>
+						<% if @projects.include?(child) %>
+						<% showchildren = true %>
 						<% break %>
+						<% end %>
 					<% end %>
-					<% ancestors.pop %>
+					<% if(!project.children.empty? && showchildren) %>
+						<% classes += " closed parent " %> <%# + cycle("odd", "even") %>
+						<% rowid = "#{project_id_lsd}span" %>
+						<% openonclick = "showHide('#{project_id_lsd}','#{project_id_lsd}span')".html_safe %>
+						<% spanicon = content_tag(:span, "&nbsp; ".html_safe, {:onclick => openonclick, :class => "expander"}) %>
+					<% else %>
+						<% classes += " child" %>
+						<% spanicon = content_tag(:span, "&nbsp; ".html_safe, {:onclick => openonclick, :class => "dummyexpander"}) %>
 					<% end %>
-					<% if (ancestors.count > 0) %>
-					<% classes += " hide" %>
+					<% if(project.parent_id == nil) %>
+						<% ancestors.clear %>
+						<% ancestors << project.id %>
+					<% else %>
+						<% looping = 1 %>
+						<% while (ancestors.any?) %>
+						<% project_ptr = project %>
+						<% while (project_ptr) %>
+							<% if (project_ptr.parent_id == ancestors.last) %>
+							<% looping = 0 %>
+							<% end %>
+							<% project_ptr = project_ptr.parent %>
+						<% end %>
+						<% if (looping == 0) %>
+							<% break %>
+						<% end %>
+						<% ancestors.pop %>
+						<% end %>
+						<% if (ancestors.count > 0) %>
+						<% classes += " hide" %>
+						<% end %>
+						<% ancestors.each do |pid| %>
+						<% classes += " " + "%04d" % pid %>
+						<% end %>
+						<% ancestors << project.id %>
 					<% end %>
-					<% ancestors.each do |pid| %>
-					<% classes += " " + "%04d" % pid %>
+					<%= content_tag :tr, :class => classes, :id => rowid do -%>
+						<td class="name">
+						<%= content_tag :span, '', :style => "padding-left: #{(2*(ancestors.length-1)).to_s}em;" %>
+						<%= spanicon %>
+						<%= project.active? ? link_to(h(project.name), {:controller => 'projects', :action => 'show', :id => project}, :class => "project") :
+							h(project.name) %>
+						<%= content_tag :span, '&nbsp;'.html_safe, :onclick => openonclick, :class => "empty #{User.current.member_of?(project) ? 'my-project' : nil}"%>
+						</td>
+					<% end -%>
 					<% end %>
-					<% ancestors << project.id %>
-				<% end %>
-				<%= content_tag :tr, :class => classes, :id => rowid do -%>
-					<td class="name">
-					<%= content_tag :span, '', :style => "padding-left: #{(2*(ancestors.length-1)).to_s}em;" %>
-					<%= spanicon %>
-					<%= project.active? ? link_to(h(project.name), {:controller => 'projects', :action => 'show', :id => project}, :class => "project") :
-						h(project.name) %>
-					<%= content_tag :span, '&nbsp;'.html_safe, :onclick => openonclick, :class => "empty #{User.current.member_of?(project) ? 'my-project' : nil}"%>
-					</td>
-				<% end -%>
-				<% end %>
-			</tbody>
-			</table>
+				</tbody>
+				</table>
+			<% end %>
 		</div>
 		<!--br>
 		<div id='global-statistics-div'>
