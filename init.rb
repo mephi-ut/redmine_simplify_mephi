@@ -11,5 +11,8 @@ Redmine::Plugin.register :redmine_simplify_mephi do
 
 	delete_menu_item :top_menu, :help
 	delete_menu_item :top_menu, :projects
+	delete_menu_item :top_menu, :my_page
+
+	delete_menu_item :account_menu, :register
 end
 

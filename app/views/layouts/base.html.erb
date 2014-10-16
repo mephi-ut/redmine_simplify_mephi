@@ -26,9 +26,6 @@
         <%= render_menu :account_menu -%>
     </div>
     <%= content_tag('div', "#{l(:label_logged_as)} #{link_to_user(User.current, :format => :username)}".html_safe, :id => 'loggedas') if User.current.logged? %>
-    <ul>
-        <li><a href="/projects/redmine-request-support/wiki/Help" class="help"><%=l(:label_help)%></a></li>
-    </ul>
 </div>
 
 <table id="workplace" style="width: 100%; border-collapse: collapse; border: 0" cellspacing="0">
