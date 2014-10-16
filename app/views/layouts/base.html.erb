@@ -54,7 +54,7 @@
 				<%
 					scope = Project
 					unless params[:closed]
-					scope = scope.where("projects.parent_id != ? OR projects.parent_id IS NULL", 12761);
+					scope = scope.where("(projects.parent_id != ? OR projects.parent_id IS NULL) AND id != ? OR identifier = ?", 12761, 12761, User.current.login);
 					scope = scope.active
 					end
 					@projects = scope.visible.order('lft').all
