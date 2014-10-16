@@ -1,6 +1,9 @@
 # encoding: UTF-8
 require 'redmine'
 
+require_dependency 'patches/controllers/my_controller'
+require_dependency 'patches/controllers/issues_controller'
+
 Redmine::Plugin.register :redmine_simplify_mephi do
 	name 'NRNU MEPhI Redmine UI simplifier'
 	description 'A plugin to simplify Redmine interface for NRNU MEPhI employees'
