@@ -45,7 +45,7 @@
 			scope = scope.active
 			@projects = scope.visible.order('lft').all
 
-			cache_if(@projects.count < 50, @projects) do
+			cache_if(@projects.count < 100, @projects) do
 				if @projects.count > 0 %>
 
 					<h2><a href='#'><%=l(:label_project_plural)%></a></h2>
