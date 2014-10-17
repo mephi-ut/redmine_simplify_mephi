@@ -8,14 +8,16 @@
   font-size: 12pt !important;
   font-weight: none !important;
 }
+/* MSIE: */
+.right-menu-list,.right-menu-list * {
+  border: none !important;
+  border-collapse: collapse !important;
+}
+/* end */
 .right-menu-list .parent.open, #projects-index a, #projects-index a:visited, #projects-index a:hover, .right-menu-list a, .right-menu a:visited, .right-menu a:hover {
   color: #ffffff !important;
   background-color: transparent !important;
   text-decoration: none;
-/* MSIE: */
-  border: none;
-  border-collapse: collapse !important;
-/* end */
 }
 
 #projects-index a:hover, .right-menu-list a:hover {
