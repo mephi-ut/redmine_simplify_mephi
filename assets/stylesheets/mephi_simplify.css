@@ -4,8 +4,7 @@
   float: none !important;
 }
 #right-menu li a {
-  background-size: 18px 18px !important;
-  padding-left: 24px !important;
+  background-position: center left;
   float: none !important;
   font-size: 12pt !important;
   font-weight: none !important;
