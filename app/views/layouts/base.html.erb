@@ -113,7 +113,7 @@
 								<%= spanicon %>
 								<%= project.active? ? link_to(h(truncate(project.name, :length => 80)), {:controller => 'projects', :action => 'show', :id => project}, :class => "project") :
 									h(project.name) %>
-								<%= content_tag :span, '&nbsp;'.html_safe, :onclick => openonclick, :class => "empty #{User.current.member_of?(project) ? 'my-project' : nil}"%>
+								<%= content_tag :span, '&nbsp;'.html_safe, :onclick => openonclick, :class => "empty" %>
 								</td>
 							<% end -%>
 						<% end %>
