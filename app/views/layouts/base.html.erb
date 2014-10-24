@@ -56,7 +56,7 @@
 					<a href="" id="expand_all"   onClick="return showAll()">Развернуть всё</a> | 
 					<a href="" id="collapse_all" onClick="return hideAll()">Свернуть всё</a>
 
-					<table class="right-menu-list">
+					<table id='left-project-list' class="right-menu-list">
 					<tbody>
 						<% ancestors = [] %>
 						<% for project in @projects %>
@@ -111,7 +111,7 @@
 								<td class="name">
 								<%= content_tag :span, '', :style => "padding-left: #{(2*(ancestors.length-1)).to_s}em;" %>
 								<%= spanicon %>
-								<%= project.active? ? link_to(h(truncate(project.name, :length => 26)), {:controller => 'projects', :action => 'show', :id => project}, :class => "project") :
+								<%= project.active? ? link_to(h(truncate(project.name, :length => 80)), {:controller => 'projects', :action => 'show', :id => project}, :class => "project") :
 									h(project.name) %>
 								<%= content_tag :span, '&nbsp;'.html_safe, :onclick => openonclick, :class => "empty #{User.current.member_of?(project) ? 'my-project' : nil}"%>
 								</td>

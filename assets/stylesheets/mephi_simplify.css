@@ -15,6 +15,11 @@
   border-collapse: collapse !important;
 }
 /* end */
+
+#left-project-list td {
+  white-space: normal;
+}
+
 .right-menu-list .parent.open, #projects-index a, #projects-index a:visited, #projects-index a:hover, .right-menu-list a, .right-menu a:visited, .right-menu a:hover {
   color: #ffffff !important;
   background-color: transparent !important;
