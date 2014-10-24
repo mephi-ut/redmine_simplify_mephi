@@ -111,7 +111,7 @@
 								<td class="name">
 								<%= content_tag :span, '', :style => "padding-left: #{(2*(ancestors.length-1)).to_s}em;" %>
 								<%= spanicon %>
-								<%= project.active? ? link_to(h(project.name), {:controller => 'projects', :action => 'show', :id => project}, :class => "project") :
+								<%= project.active? ? link_to(h(truncate(project.name, :length => 26)), {:controller => 'projects', :action => 'show', :id => project}, :class => "project") :
 									h(project.name) %>
 								<%= content_tag :span, '&nbsp;'.html_safe, :onclick => openonclick, :class => "empty #{User.current.member_of?(project) ? 'my-project' : nil}"%>
 								</td>
