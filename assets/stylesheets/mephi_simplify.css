@@ -1,16 +1,16 @@
-#right-menu ul {margin: 0 0 0 40px;  padding: 0;}
-#right-menu li {
+#left-menu ul {margin: 0 0 0 40px;  padding: 0;}
+#left-menu li {
   margin-bottom: 4px !important;
   float: none !important;
 }
-#right-menu li a {
+#left-menu li a {
   background-position: center left;
   float: none !important;
   font-size: 12pt !important;
   font-weight: none !important;
 }
 /* MSIE: */
-.right-menu-list,.right-menu-list * {
+.left-menu-list,.left-menu-list * {
   border: none !important;
   border-collapse: collapse !important;
 }
@@ -20,17 +20,17 @@
   white-space: normal;
 }
 
-.right-menu-list .parent.open, #projects-index a, #projects-index a:visited, #projects-index a:hover, .right-menu-list a, .right-menu a:visited, .right-menu a:hover {
+.left-menu-list .parent.open, #projects-index a, #projects-index a:visited, #projects-index a:hover, .left-menu-list a, .left-menu a:visited, .left-menu a:hover {
   color: #ffffff !important;
   background-color: transparent !important;
   text-decoration: none;
 }
 
-#projects-index a:hover, .right-menu-list a:hover {
+#projects-index a:hover, .left-menu-list a:hover {
   text-decoration: underline;
 }
 
-#right-menu, #right-menu h2 {
+#left-menu, #left-menu h2 {
   color: #ffffff !important;
 }
 

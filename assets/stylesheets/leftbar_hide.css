@@ -1,0 +1,45 @@
+/* based on https://github.com/bdemirkir/sidebar_hide */
+
+#hideLeftbarButton {
+	position: fixed;
+	width: 7px;
+	height: 23px;
+	background-image: url("../images/leftbar_hide.png");
+	background-position: -7px 0;
+}
+
+#hideLeftbarButton:hover {
+	cursor: pointer;
+}
+
+#hideLeftbarButton.leftbar_hidden {
+	background-position: 0 0;
+}
+
+#leftbarHandler {
+	position: absolute;
+	float: right;
+	top: 75px;
+/*	left: 0px;*/
+	margin-top: 75px;
+	margin-left: -2px;
+	z-index: 11;
+}
+
+#content {
+	position: relative;
+}
+
+#left-menu.leftbar_hidden {
+	display: none;
+}
+/*
+body #content.leftbar_hidden {
+	width: auto;
+	margin-right: 0;
+}
+*/
+/***** Media print specific styles *****/
+@media print {
+	#leftbarHandler { display: none; }
+}
