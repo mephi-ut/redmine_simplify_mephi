@@ -22,6 +22,10 @@
 <div id="wrapper2">
 <div id="wrapper3">
 <div id="top-menu">
+    <span id="top-menu-top">
+        <%= render_menu :top_menu if User.current.logged? || !Setting.login_required? -%>
+	<a class="projects" href="/projects">Проекты</a>
+    </span>
     <div id="account">
         <%= render_menu :account_menu -%>
     </div>
@@ -36,7 +40,9 @@
         <td id="left-menu" style='border: 0; padding: 0; width: 250px; top: 0px; background-color: #376b98; color: #ffffff' valign="top">
             <div style='padding: 15px'>
                 <div id="top-menu" style='background-color: #376b98; height: auto; margin: 0; padding: 0; display: block'>
+		    <span id="top-menu-right">
                     <%= render_menu :top_menu if User.current.logged? || !Setting.login_required? -%>
+		    </span>
                 </div>
 		<br>
 		<%# cache do %>
@@ -149,7 +155,7 @@
                 <% if cookies["leftbar_hide"] == "hide" %>
                     <script>
                         $(function() {
-                            hideSideBar();
+                            hideLeftBar();
                         });
                     </script>
                 <% end %>

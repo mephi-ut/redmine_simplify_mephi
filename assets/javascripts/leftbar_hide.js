@@ -29,10 +29,12 @@ function hideLeftBar()
 {
 	if ($('#left-menu').is(':visible')) {
 		$('#left-menu').addClass('leftbar_hidden');
+		$('#top-menu-top').addClass('leftbar_hidden');
 		$('#hideLeftbarButton').addClass('leftbar_hidden');
 		setCookie('leftbar_hide', 'hide', 100);
 	} else {
 		$('#left-menu').removeClass('leftbar_hidden');
+		$('#top-menu-top').removeClass('leftbar_hidden');
 		$('#hideLeftbarButton').removeClass('leftbar_hidden');
 		setCookie('leftbar_hide', 'show', 100);
 	}

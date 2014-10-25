@@ -33,6 +33,10 @@
 #left-menu.leftbar_hidden {
 	display: none;
 }
+
+#top-menu-top.leftbar_hidden {
+	display: inline;
+}
 /*
 body #content.leftbar_hidden {
 	width: auto;

@@ -43,4 +43,12 @@
   font-weight: bold;
 }
 
+#top-menu-top {
+	display: none;
+}
+#top-menu-top li a {
+	height: 14px;
+	display: block;
+}
+
 
