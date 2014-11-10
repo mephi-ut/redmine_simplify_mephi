@@ -54,7 +54,8 @@
 			scope = scope.active
 			@projects = scope.visible.order('lft').all
 
-			cache_if(@projects.count < 100, @projects) do
+			require 'digest/md5'
+			cache("#{User.current.pref[:leftmenu_project_name_limit]}-#{Digest::MD5.hexdigest(YAML::dump(@projects))}") do
 				if @projects.count > 0 %>
 
 					<h2><a href='#'><%=l(:label_project_plural)%></a></h2>
@@ -118,11 +119,17 @@
 							<% end %>
 							<%= content_tag :tr, :class => classes, :id => rowid do -%>
 								<td class="name">
-								<%= content_tag :span, '', :style => "padding-left: #{(2*(ancestors.length-1)).to_s}em;" %>
-								<%= spanicon %>
-								<%= project.active? ? link_to(h(truncate(project.name, :length => 80)), {:controller => 'projects', :action => 'show', :id => project}, :class => "project") :
-									h(project.name) %>
-								<%= content_tag :span, '&nbsp;'.html_safe, :onclick => openonclick, :class => "empty" %>
+								<%= content_tag :table, '', :style => "margin-left: #{(10*(ancestors.length-1)).to_s}px;" do %>
+									<%= content_tag :tr do -%>
+										<%= content_tag :td do -%>
+											<%= spanicon %>
+										<% end %>
+										<%= content_tag :td do -%>
+											<%= project.active? ? link_to(h(truncate(project.name, :length => User.current.pref[:leftmenu_project_name_limit])), {:controller => 'projects', :action => 'show', :id => project}, :title => project.name, :class => "project") :
+												h(truncate(project.name, :length => User.current.pref[:leftmenu_project_name_limit])) %>
+										<% end %>
+									<% end %>
+								<% end %>
 								</td>
 							<% end -%>
 						<% end %>

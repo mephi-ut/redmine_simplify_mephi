@@ -1,0 +1,6 @@
+</fieldset>
+<fieldset class="box">
+	<legend><%=l(:leftmenu_project_name_limit)%></legend>
+	<div class="tabular">
+		<%=tag(:input, :name => 'pref[leftmenu_project_name_limit]', :type => 'number', :min => 10, :max => 536, :size => 3, :maxlength => 3, :value => user.preference[:leftmenu_project_name_limit].nil? ? 80 : user.preference[:leftmenu_project_name_limit])%>
+	</div>

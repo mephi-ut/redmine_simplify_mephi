@@ -51,4 +51,15 @@
 	display: block;
 }
 
+#left-menu .dummyexpander, #left-menu .expander {
+	margin-right: -16px !important;
+}
 
+#left-menu a.project {
+}
+
+#left-menu .name table, #left-menu .name tr, #left-menu .name td {
+	border-collapse: collapse;
+	padding: 0;
+	margin: 0;
+}

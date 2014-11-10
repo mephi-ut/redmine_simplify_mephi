@@ -3,6 +3,7 @@ require 'redmine'
 
 require_dependency 'patches/controllers/my_controller'
 require_dependency 'patches/controllers/issues_controller'
+require_dependency 'hooks/my_account'
 
 Redmine::Plugin.register :redmine_simplify_mephi do
 	name 'NRNU MEPhI Redmine UI simplifier'
