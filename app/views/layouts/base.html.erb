@@ -122,7 +122,7 @@
 								<td class="name">
 									<%= content_tag :table, '', :style => "margin-left: #{(10*(ancestors.length-1)).to_s}px;" do %>
 										<%= content_tag :tr do -%>
-											<%= content_tag :td do -%>
+											<%= content_tag :td, :style => 'width: 16px' do -%>
 												<%= spanicon %>
 											<% end %>
 											<%= content_tag :td do -%>
