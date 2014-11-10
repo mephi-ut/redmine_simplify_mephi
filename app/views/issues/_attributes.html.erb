@@ -55,9 +55,14 @@
 <% end %>
 </div>
 
+<%
+	Rails.logger.info(params.to_yaml)
+	Rails.logger.info(@issue.to_yaml)
+	Rails.logger.info(@copy_from.to_yaml)
+%>
 <div class="splitcontentright">
 <% if @issue.safe_attribute? 'parent_issue_id' %>
-<p id="parent_issue"><%= f.text_field :parent_issue_id, :size => 10, :required => @issue.required_attribute?('parent_issue_id') %></p>
+<p id="parent_issue"><%= f.text_field :parent_issue_id, :size => 10, :required => @issue.required_attribute?('parent_issue_id'), :value => params['issue'].nil? ? (@issue.nil? ? (@copy_from.nil? ? nil : @copy_from['parent_id']) : @issue.parent_issue_id) : params['issue']['parent_issue_id'] %></p>
 <%= javascript_tag "observeAutocompleteField('issue_parent_issue_id', '#{escape_javascript auto_complete_issues_path}')" %>
 <% end %>
 
