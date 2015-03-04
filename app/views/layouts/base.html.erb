@@ -55,8 +55,10 @@
 			@projects = scope.visible.order('lft').all
 			truncate_length = User.current.pref[:leftmenu_project_name_limit].nil? ? 80 : User.current.pref[:leftmenu_project_name_limit]
 
+			@projects_cache_key = "#{User.current.pref[:leftmenu_project_name_limit]}-#{Digest::MD5.hexdigest(YAML::dump(@projects))}"
+
 			require 'digest/md5'
-			cache("#{User.current.pref[:leftmenu_project_name_limit]}-#{Digest::MD5.hexdigest(YAML::dump(@projects))}") do
+			cache(@projects_cache_key) do
 				if @projects.count > 0 %>
 
 					<h2><a href='#'><%=l(:label_project_plural)%></a></h2>
