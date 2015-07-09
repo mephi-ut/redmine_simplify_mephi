@@ -63,3 +63,16 @@
 	padding: 0;
 	margin: 0;
 }
+
+#help_button {
+	font-size: 18px;
+}
+
+.vcenter * {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.underline_on_hover:hover {
+	text-decoration: underline;
+}

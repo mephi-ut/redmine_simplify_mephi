@@ -1,2 +1,7 @@
 ru:
   leftmenu_project_name_limit: 'Предел для имён проектов (в левом меню)'
+  label_it_service_plural: "IT сервисы"
+  label_project_type_edit: "Тип проекта"
+  label_project_type_submit: "Подтвердить"
+  types: "Типы"
+  
