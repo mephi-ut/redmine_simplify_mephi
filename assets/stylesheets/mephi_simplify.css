@@ -1,6 +1,6 @@
 #left-menu ul {margin: 0 0 0 40px;  padding: 0;}
 #left-menu li {
-  margin-bottom: 4px !important;
+  padding-bottom: 4px !important;
   float: none !important;
 }
 #left-menu li a {
