@@ -27,7 +27,7 @@ module SimplifyMEPhI
 		end
 		module InstanceMethods
 			def set_type
-				deny_access unless User.current.admin?
+				return unless User.current.admin?	# TODO: SECURITY: drop type_id if not an admin!
 
 				if not self.persisted?
 					self.type_id ||=
