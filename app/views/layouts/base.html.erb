@@ -34,7 +34,6 @@
 
 <%= stylesheet_link_tag    'leftbar_hide.css', :plugin => 'redmine_simplify_mephi' %>
 <%= javascript_include_tag 'leftbar_hide.js',  :plugin => 'redmine_simplify_mephi' %>
-
 <table id="workplace" style="width: 100%; border-collapse: collapse; border: 0" cellspacing="0">
     <tr style='border: 0'>
         <td id="left-menu" style='border: 0; padding: 0; width: 320px; top: 0px; background-color: #376b98; color: #ffffff' valign="top">
@@ -43,7 +42,26 @@
 		    <span id="top-menu-right">
 			<div class='vcenter'><a href="/projects/redmine-request-support/wiki" id="help_button"><span><%= image_tag("help_icon.png", :plugin => 'redmine_simplify_mephi', :width => '32px') %></span> <span>&nbsp;Помощь</span></a></div>
 			<div style='margin-top: 30px'></div>
-                    <%= render_menu :top_menu if User.current.logged? || !Setting.login_required? -%>
+                    <%#= render_menu :top_menu if User.current.logged? || !Setting.login_required? -%>
+		    	<ul>
+				<%
+					def querylink(className, statusFilter, href, caption)
+						content = link_to(h(caption), "#{href}&op%5Bstatus_id%5D=#{statusFilter}", :class => className);
+						IssueStatus.all.each do |s|
+							content << link_to(h(s.name), "#{href}&op%5Bstatus_id%5D=%3D&v%5Bstatus_id%5D%5B%5D=#{s.id}", :class => "mainnav_sublink #{className}_sublink")
+						end
+						return content_tag('li', content, { :onmouseover => "$('.#{className}_sublink').css('display', 'block')" , :onmouseout => "$('.#{className}_sublink').css('display', 'none')" } );
+					end
+				%>
+				<li><a class='new-issue' href='/projects/<%=User.current.login%>/issues/new'>Новая задача</a></li>
+				<!--li><a class='tasks-incoming' href='/issues?utf8=✓&set_filter=1&f%5B%5D=status_id&op%5Bstatus_id%5D=o&f%5B%5D=assignee&op%5Bassignee%5D=%3D&v%5Bassignee%5D%5B%5D=me&f%5B%5D=&c%5B%5D=subject&c%5B%5D=status&c%5B%5D=priority&c%5B%5D=author&c%5B%5D=updated_on&c%5B%5D=due_date&c%5B%5D=project&group_by='>Поручено мне</a></li-->
+				<%= querylink('tasks-incoming', 'o', '/issues?utf8=✓&set_filter=1&f%5B%5D=status_id&f%5B%5D=assignee&op%5Bassignee%5D=%3D&v%5Bassignee%5D%5B%5D=me&f%5B%5D=&c%5B%5D=subject&c%5B%5D=status&c%5B%5D=priority&c%5B%5D=author&c%5B%5D=updated_on&c%5B%5D=due_date&c%5B%5D=project&group_by=', 'Поручено мне') %>
+				<!--li><a class='tasks-outcoming' href='/issues?utf8=✓&set_filter=1&f%5B%5D=status_id&op%5Bstatus_id%5D=o&f%5B%5D=author_id&op%5Bauthor_id%5D=%3D&v%5Bauthor_id%5D%5B%5D=me&f%5B%5D=assigned_to_id&op%5Bassigned_to_id%5D=%21&v%5Bassigned_to_id%5D%5B%5D=me&f%5B%5D=&c%5B%5D=subject&c%5B%5D=status&c%5B%5D=priority&c%5B%5D=assigned_to&c%5B%5D=updated_on&c%5B%5D=due_date&group_by='>Мной поручено</a></li-->
+				<%= querylink('tasks-outcoming', 'o', '/issues?utf8=✓&set_filter=1&f%5B%5D=status_id&op%5Bstatus_id%5D=o&f%5B%5D=author_id&op%5Bauthor_id%5D=%3D&v%5Bauthor_id%5D%5B%5D=me&f%5B%5D=assigned_to_id&op%5Bassigned_to_id%5D=%21&v%5Bassigned_to_id%5D%5B%5D=me&f%5B%5D=&c%5B%5D=subject&c%5B%5D=status&c%5B%5D=priority&c%5B%5D=assigned_to&c%5B%5D=updated_on&c%5B%5D=due_date&group_by=', 'Мной поручено') %>
+				<!--li><a class='tasks-control' href='/issues?utf8=✓&set_filter=1&f%5B%5D=status_id&op%5Bstatus_id%5D=o&f%5B%5D=watcher_id&op%5Bwatcher_id%5D=%3D&v%5Bwatcher_id%5D%5B%5D=me&f%5B%5D=assigned_to_id&op%5Bassigned_to_id%5D=%21&v%5Bassigned_to_id%5D%5B%5D=me&f%5B%5D=author_id&op%5Bauthor_id%5D=%21&v%5Bauthor_id%5D%5B%5D=me&f%5B%5D=&c%5B%5D=subject&c%5B%5D=status&c%5B%5D=priority&c%5B%5D=author&c%5B%5D=assigned_to&c%5B%5D=updated_on&c%5B%5D=due_date&group_by='>На контроле</a></li-->
+				<%= querylink('tasks-control', 'o', '/issues?utf8=✓&set_filter=1&f%5B%5D=status_id&op%5Bstatus_id%5D=o&f%5B%5D=watcher_id&op%5Bwatcher_id%5D=%3D&v%5Bwatcher_id%5D%5B%5D=me&f%5B%5D=assigned_to_id&op%5Bassigned_to_id%5D=%21&v%5Bassigned_to_id%5D%5B%5D=me&f%5B%5D=author_id&op%5Bauthor_id%5D=%21&v%5Bauthor_id%5D%5B%5D=me&f%5B%5D=&c%5B%5D=subject&c%5B%5D=status&c%5B%5D=priority&c%5B%5D=author&c%5B%5D=assigned_to&c%5B%5D=updated_on&c%5B%5D=due_date&group_by=', 'На контроле') %>
+				<li><a class='stuff-to-do' href='/stuff_to_do'>Оперативный план</a></li>
+			</ul>
 		    </span>
                 </div>
 		<br>

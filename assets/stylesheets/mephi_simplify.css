@@ -76,3 +76,9 @@
 .underline_on_hover:hover {
 	text-decoration: underline;
 }
+
+.mainnav_sublink {
+	display: none;
+	margin-left: 40px;
+
+}
