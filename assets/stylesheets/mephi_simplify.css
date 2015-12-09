@@ -1,6 +1,6 @@
 #left-menu ul {margin: 0 0 0 40px;  padding: 0;}
 #left-menu li {
-  margin-bottom: 4px !important;
+  padding-bottom: 4px !important;
   float: none !important;
 }
 #left-menu li a {
@@ -62,4 +62,23 @@
 	border-collapse: collapse;
 	padding: 0;
 	margin: 0;
+}
+
+#help_button {
+	font-size: 18px;
+}
+
+.vcenter * {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.underline_on_hover:hover {
+	text-decoration: underline;
+}
+
+.mainnav_sublink {
+	display: none;
+	margin-left: 40px;
+
 }

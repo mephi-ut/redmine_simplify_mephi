@@ -1,0 +1,8 @@
+<h2><%=l(:label_project_type_edit) %></h2>
+<%=labelled_form_for @project do |f| %>
+	<% error_messages_for @project %>
+	<p>
+		<%= f.collection_select :type_id, ProjectType.order('id').all, :id, :name %>
+	</p>
+	<%= submit_tag l(:label_project_type_submit) %>
+<% end %>

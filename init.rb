@@ -4,7 +4,10 @@ require 'redmine'
 require_dependency 'patches/controllers/my_controller'
 require_dependency 'patches/controllers/issues_controller'
 require_dependency 'patches/models/project'
+require_dependency 'patches/helpers/projects_helper'
 require_dependency 'hooks/my_account'
+require_dependency 'hooks/view_projects_form'
+
 
 Redmine::Plugin.register :redmine_simplify_mephi do
 	name 'NRNU MEPhI Redmine UI simplifier'
@@ -19,5 +22,7 @@ Redmine::Plugin.register :redmine_simplify_mephi do
 	delete_menu_item :top_menu, :my_page
 
 	delete_menu_item :account_menu, :register
+
+	settings :default => {'project_type_id' => 0}
 end
 

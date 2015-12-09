@@ -1,2 +1,6 @@
 en:
   leftmenu_project_name_limit: 'Project name limit in the left menu'
+  label_it_service_plural: "IT services"
+  label_project_type_edit: "Project type"
+  label_project_type_submit: "Submit"
+  types: "Types"
